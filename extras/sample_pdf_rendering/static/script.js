@@ -37,12 +37,10 @@ async function loadPdf() {
     drawBoundingBoxesWithHover(bboxData, page, viewport, ctx, pageWrapper);
   }
 }
-
 function drawBoundingBoxesWithHover(bboxes, page, viewport, ctx, containerEl) {
   ctx.strokeStyle = 'red';
   ctx.lineWidth = 2;
 
-  // Remove any old overlays
   containerEl.querySelectorAll('.bbox-overlay').forEach(el => el.remove());
 
   bboxes.forEach((box) => {
@@ -56,10 +54,8 @@ function drawBoundingBoxesWithHover(bboxes, page, viewport, ctx, containerEl) {
     const width = Math.abs(vx1 - vx0);
     const height = Math.abs(vy1 - vy0);
 
-    // Draw on canvas
     ctx.strokeRect(x, y, width, height);
 
-    // Add hover overlay
     const overlay = document.createElement('div');
     overlay.className = 'bbox-overlay';
     overlay.style.position = 'absolute';
@@ -69,10 +65,28 @@ function drawBoundingBoxesWithHover(bboxes, page, viewport, ctx, containerEl) {
     overlay.style.height = `${height}px`;
     overlay.style.backgroundColor = 'rgba(255, 0, 0, 0.05)';
     overlay.style.border = '1px solid red';
-    overlay.style.zIndex = 1;
-    overlay.title = `Section: ${box.section || 'N/A'}\nType: ${box.block_type}\nText: ${box.content.slice(0, 100)}...`;
+    overlay.style.zIndex = 2;
 
+    // Prepare tooltip HTML
+    const tooltipHtml = `
+      <strong>Section:</strong> ${box.section || 'N/A'}<br/>
+      <strong>Type:</strong> ${box.block_type}<br/>
+      <strong>Order:</strong> ${box.order}<br/>
+      <strong>Text:</strong> ${box.content?.slice(0, 150) || '—'}
+    `;
+
+    overlay.setAttribute('data-tippy-content', tooltipHtml);
     containerEl.appendChild(overlay);
+  });
+
+  // Initialize Tippy on all overlays (after DOM insertion)
+  tippy('.bbox-overlay', {
+    allowHTML: true,
+    theme: 'light-border',
+    placement: 'top',
+    delay: [100, 0],
+    interactive: true,
+    maxWidth: 300
   });
 }
 

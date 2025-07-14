@@ -52,6 +52,11 @@ In this project, I have extracted details from the block and stored them in mong
         290.9458923339844,
         707.8177642822266
     ],
-    "block_type": "Text"
+    "block_type": "Text",
+    "order": 6
 }
 ```
+
+I have created end points on my FastAPI app to return the pdf along with the data from mongodb. 
+- In frontend, [`PDF.js`](https://mozilla.github.io/pdf.js/) ([cdn link](https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js)) is used to display the pdf
+- `Tippy.js` ([repo link](https://github.com/atomiks/tippyjs)) is used to format the hover toolip shown over the bounding boxes.

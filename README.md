@@ -60,3 +60,9 @@ In this project, I have extracted details from the block and stored them in mong
 I have created end points on my FastAPI app to return the pdf along with the data from mongodb. 
 - In frontend, [`PDF.js`](https://mozilla.github.io/pdf.js/) ([cdn link](https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js)) is used to display the pdf
 - `Tippy.js` ([repo link](https://github.com/atomiks/tippyjs)) is used to format the hover toolip shown over the bounding boxes.
+
+The resulting output can be seen in the following video
+
+https://github.com/user-attachments/assets/e8908db8-a77c-4310-8790-c98e17363456
+
+

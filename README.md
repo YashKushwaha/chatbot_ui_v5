@@ -6,6 +6,8 @@ Focus of this project is data/text extraction from pdfs and build a RAG pipeline
 
 I have taken papers from ArXiv as the data source.
 
+---
+
 ### Data Extraction From PDFs
 We have multiple libraries in Python for extracting text from pdf such as 
 - [PyPDF2](https://pypi.org/project/PyPDF2/)
@@ -22,7 +24,7 @@ For this project I have used `marker-pdf`([installation](https://pypi.org/projec
 
 To check the `marker` library, a sample pdf was downloaded from [arxiv](https://arxiv.org/abs/2412.17149). Text extracted from the pdf is available here in this [.md file](docs/2412.17149v1.md), images extracted are [here](docs/2412.17149v1) and the original pdf is [here](docs/2412.17149v1.pdf)
 
-Note: that the library downloads models of size ~ 2 GB to the `.cache/datalabs/models` folder
+> Note: the library downloads models of size ~ 2 GB to the `.cache/datalabs/models` folder
 
 Once data has been extracted from pdf in markdown format, we can use the [`MarkdownReader`](https://github.com/run-llama/llama_index/blob/131df8869d22049ee503edcc293da22dfb95ac1b/llama-index-integrations/readers/llama-index-readers-file/llama_index/readers/file/markdown/base.py) to load the data.
 

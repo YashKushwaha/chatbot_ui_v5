@@ -4,7 +4,7 @@ This is my 5th project exploring the advanced concepts in Generative AI particul
 
 Focus of this project is data/text extraction from pdfs and build a RAG pipeline on it.
 
-I have taken papers on ArXiv as the data source.
+I have taken papers from ArXiv as the data source.
 
 ### Data Extraction From PDFs
 We have multiple libraries in Python for extracting text from pdf such as 
@@ -28,4 +28,30 @@ Once data has been extracted from pdf in markdown format, we can use the [`Markd
 
 It splits the markdown file into smaller chunks. The logic can be found in the `markdown_to_tups` function defined in the [source code](https://github.com/run-llama/llama_index/blob/131df8869d22049ee503edcc293da22dfb95ac1b/llama-index-integrations/readers/llama-index-readers-file/llama_index/readers/file/markdown/base.py)
 
-Since document is split by sections, we get documents of varying length
+Since document is split by sections, we get documents of varying length. We can loop through the nodes and further split the nodes into smaller nodes with some overlap.
+
+---
+It turns out that the `text_from_rendered` method in `marker` library returns pdf into a nice Markdown format which is great if we want to generate a summary of the paper or directly feed into the LLM. However for RAG application, we need smaller chunks and metadata (e.g. page number, location on the page etc) so that we can evaluate retrieval pipeline. For this we need to parse through the individual blocks in the pdf to get the metadata.
+
+Now, data in pdf is stored into different types of blocks such as Text, Title, Caption, Image, PageHeader etc. We can decide which blocks to keep and which blocks to discard.
+
+---
+**Understanding the blocks extracted**
+
+To visualize which parts of the part have been processed and which have been filtered out, we can extract the bounding box coordinates from the blocks and then plot these bounding boxes on the pdf. 
+
+In this project, I have extracted details from the block and stored them in mongo db database. A sample record looks like this 
+```json
+{
+    "content": "Agentic AI systems, composed of specialized\nagents working collaboratively to achieve com-\nplex objectives, have transformed industries such\nas market research, business process optimization,\nand product recommendation. These systems excel\nin automating decision-making and streamlining\nworkflows. However, their optimization remains\nchallenging due to the complexity of agent interac-\ntions and reliance on manual configurations.",
+    "section": "1 Introduction",
+    "page": 0,
+    "bbox": [
+        69.26171875,
+        588.3491973876953,
+        290.9458923339844,
+        707.8177642822266
+    ],
+    "block_type": "Text"
+}
+```

@@ -59,19 +59,6 @@ def get_pdf():
     PDF_PATH = '/mnt/f/chatbot_ui_v5/docs/2412.17149v1.pdf'
     return FileResponse(PDF_PATH, media_type='application/pdf')
 
-@app.get("/bboxes_old")
-def get_bboxes():
-    content = [
-    {
-        "page": 0,
-        "bbox": bbox,
-        "text": "Example chunk",
-        "section": "Introduction"
-    },
-
-    ]
-    return JSONResponse(content = content)
-
 @app.get("/bboxes")
 def get_bboxes():
     mongo_db_client = app.state.mongo_db_client

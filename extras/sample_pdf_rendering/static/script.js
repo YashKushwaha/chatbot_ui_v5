@@ -101,3 +101,19 @@ fetch(bboxUrl)
     bboxData = data;
     loadPdf();
   });
+
+  document.getElementById("open-pdf").addEventListener("click", () => {
+  document.getElementById("pdf-modal").style.display = "block";
+});
+
+document.getElementById("close-modal").addEventListener("click", () => {
+  document.getElementById("pdf-modal").style.display = "none";
+});
+
+// Optional: Close modal if clicked outside content
+window.addEventListener("click", (event) => {
+  const modal = document.getElementById("pdf-modal");
+  if (event.target === modal) {
+    modal.style.display = "none";
+  }
+});

@@ -27,7 +27,7 @@ def flip_bbox_y(bbox, page_height):
 app = FastAPI()
 app.state.mongo_db_client = mongo_db_client
 
-BASE = '/mnt/f/chatbot_ui_v5/extras/sample_pdf_rendering/'
+BASE = '/mnt/f/chatbot_ui_v5/extras/visualize_pdf_data_extraction/'
 TEMPLATES_DIR = os.path.join(BASE, 'templates')
 STATIC_DIR = os.path.join(BASE, 'static')
 
@@ -44,10 +44,13 @@ def root(request: Request):
     })
 
 
-@app.get("/pdf")
-def get_pdf():
-    PDF_PATH = '/mnt/f/chatbot_ui_v5/docs/2412.17149v1.pdf'
-    return FileResponse(PDF_PATH, media_type='application/pdf')
+@app.get("/get_pdf_list")
+def get_pdf_list():
+    mongo_db_client = app.state.mongo_db_client
+    database = mongo_db_client['chatbot_ui_v5']  
+    collection = database['metadata']
+    files = [i.get('file') for i in collection.find({})]
+    return JSONResponse(content = files)
 
 @app.get("/bboxes")
 def get_bboxes():

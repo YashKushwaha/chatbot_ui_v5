@@ -1,0 +1,64 @@
+* {
+  box-sizing: border-box; /* ensures borders/padding don't add extra size */
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  overflow: hidden; /* avoid scrollbars unless explicitly enabled */
+  background-color: #ddd; /* light gray */
+  font-family: sans-serif;
+}
+
+.app-container {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.title-div {
+  width: 100%;
+  height: 25px;
+  background-color: #f0f0f0; /* optional visual style */
+  text-align: center;
+}
+
+.main-div {
+  flex: 1;
+  width: 100%;
+  border: 1px solid red;
+  overflow: auto;
+  display: flex;  
+  flex-direction: row;
+}
+
+.left-panel{
+  width: 200px;
+  border: 2px solid green;
+
+}
+
+.center-panel{
+  width: 600px;
+  border: 2px solid blue;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.right-panel{
+  width: 200px;
+    border: 2px solid green;
+}
+
+.pdf-list-container{
+  flex:1;
+
+}
+
+.file-name{
+  width:100%;
+  height: 25px;
+  padding-left: 5px;
+
+}

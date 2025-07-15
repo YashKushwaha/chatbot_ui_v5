@@ -6,8 +6,19 @@
 
 </head>
 <body>
-  <h2> PDF Display </h2>
-  <div id="pdf-container"></div>
+  <h2 id="open-pdf" style="cursor: pointer;">📄 PDF Display</h2>
+
+    <!-- Modal Overlay -->
+  <div id="pdf-modal" class="modal">
+    <div class="modal-content">
+      <span id="close-modal" class="close">&times;</span>
+      <div id="pdf-container"></div>
+    </div>
+  </div>
+
+
+
+
   <script src="static/script.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
   <script> window.CHAT_ENDPOINT = "{{ chat_endpoint }}"</script>

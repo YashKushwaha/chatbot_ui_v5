@@ -31,6 +31,9 @@ BASE = '/mnt/f/chatbot_ui_v5/extras/visualize_pdf_data_extraction/'
 TEMPLATES_DIR = os.path.join(BASE, 'templates')
 STATIC_DIR = os.path.join(BASE, 'static')
 
+PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
+PDF_LOCATION = os.path.join(PROJECT_ROOT, 'local_only', 'arxiv')
+
 
 templates = Jinja2Templates(directory=TEMPLATES_DIR)
 app.mount("/static", StaticFiles(directory=STATIC_DIR), name="static")
@@ -57,11 +60,15 @@ def get_bboxes():
     mongo_db_client = app.state.mongo_db_client
     database = mongo_db_client['chatbot_ui_v5']  
     collection = database['test']
-
     content = list(collection.find({}, {'_id': 0}))
     for i in content:
         i['bbox'] = flip_bbox_y(i['bbox'], 842.0)
     return JSONResponse(content = content)
+
+@app.get("/pdf/{file_name}")
+def get_pdf(file_name):
+    file = os.path.join(PDF_LOCATION, file_name)
+    return FileResponse(file, media_type='application/pdf', headers={"Content-Disposition": f'inline; filename="{file_name}"'})
 
 
 if __name__ == "__main__":

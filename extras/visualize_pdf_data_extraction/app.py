@@ -16,8 +16,6 @@ def get_mongo_db_client():
     assert client.admin.command("ping") == {'ok': 1.0}
     return client
 
-mongo_db_client = get_mongo_db_client()
-
 def flip_bbox_y(bbox, page_height):
     x0, y0, x1, y1 = bbox
     flipped_y0 = page_height - y1
@@ -25,7 +23,7 @@ def flip_bbox_y(bbox, page_height):
     return [x0, flipped_y0, x1, flipped_y1]
 
 app = FastAPI()
-app.state.mongo_db_client = mongo_db_client
+app.state.mongo_db_client = get_mongo_db_client()
 
 BASE = '/mnt/f/chatbot_ui_v5/extras/visualize_pdf_data_extraction/'
 TEMPLATES_DIR = os.path.join(BASE, 'templates')
@@ -55,6 +53,22 @@ def get_pdf_list():
     files = [i.get('file') for i in collection.find({})]
     return JSONResponse(content = files)
 
+@app.get("/get_block_data/{filename}")
+def get_block_data(filename):
+    mongo_db_client = app.state.mongo_db_client
+    database = mongo_db_client['chatbot_ui_v5']  
+    collection = database['metadata']
+    collection_name = list(collection.find({"file": filename}, {'_id':0}))
+    if collection_name:
+        collection_name = collection_name[0]['collection_name']
+        coll = database[collection_name]
+        records = list(coll.find({}, {'_id':0}))
+        return JSONResponse(content = records)
+    else:
+        return JSONResponse(content = [])
+
+
+
 @app.get("/bboxes")
 def get_bboxes():
     mongo_db_client = app.state.mongo_db_client
@@ -69,6 +83,18 @@ def get_bboxes():
 def get_pdf(file_name):
     file = os.path.join(PDF_LOCATION, file_name)
     return FileResponse(file, media_type='application/pdf', headers={"Content-Disposition": f'inline; filename="{file_name}"'})
+
+@app.get("/get_markdown_data/{filename}")
+def get_markdown_data(filename):
+    mongo_db_client = app.state.mongo_db_client
+    database = mongo_db_client['chatbot_ui_v5']  
+    collection = database['pdf_to_markdown']
+    collection_name = list(collection.find({"file": filename}, {'_id':0}))
+    if collection_name:
+        collection_name = collection_name[0]['markdown']
+        return JSONResponse(content = collection_name)
+    else:
+        return JSONResponse(content = [])
 
 
 if __name__ == "__main__":

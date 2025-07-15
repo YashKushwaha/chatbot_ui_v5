@@ -26,16 +26,20 @@ To check the `marker` library, a sample pdf was downloaded from [arxiv](https://
 
 > Note: the library downloads models of size ~ 2 GB to the `.cache/datalabs/models` folder
 
-Once data has been extracted from pdf in markdown format, we can use the [`MarkdownReader`](https://github.com/run-llama/llama_index/blob/131df8869d22049ee503edcc293da22dfb95ac1b/llama-index-integrations/readers/llama-index-readers-file/llama_index/readers/file/markdown/base.py) to load the data.
+The extracted markdown can be directly passed into LLM pipeline and used for tasks like summary generation, metadata enrichment etc.
+
+To build a vector database, we can read the markdown file and split it into smaller chnuks.
+
+We can use the [`MarkdownReader`](https://github.com/run-llama/llama_index/blob/131df8869d22049ee503edcc293da22dfb95ac1b/llama-index-integrations/readers/llama-index-readers-file/llama_index/readers/file/markdown/base.py) to load the data.
 
 It splits the markdown file into smaller chunks. The logic can be found in the `markdown_to_tups` function defined in the [source code](https://github.com/run-llama/llama_index/blob/131df8869d22049ee503edcc293da22dfb95ac1b/llama-index-integrations/readers/llama-index-readers-file/llama_index/readers/file/markdown/base.py)
 
 Since document is split by sections, we get documents of varying length. We can loop through the nodes and further split the nodes into smaller nodes with some overlap.
 
 ---
-It turns out that the `text_from_rendered` method in `marker` library returns pdf into a nice Markdown format which is great if we want to generate a summary of the paper or directly feed into the LLM. However for RAG application, we need smaller chunks and metadata (e.g. page number, location on the page etc) so that we can evaluate retrieval pipeline. For this we need to parse through the individual blocks in the pdf to get the metadata.
+It turns out that the `text_from_rendered` method in `marker` library returns pdf into a nice Markdown format which is great if we want to generate a summary of the paper or directly feed into the LLM. However for RAG application, we need smaller chunks along with their metadata (e.g. page number, location on the page etc) so that we can evaluate retrieval pipeline. But the resulting markdown lacks metadata. 
 
-Now, data in pdf is stored into different types of blocks such as Text, Title, Caption, Image, PageHeader etc. We can decide which blocks to keep and which blocks to discard.
+To get metadata we will have to manually parse through different block types that make up the pdf (such as Text, Title, Caption, Image, PageHeader etc). We can decide which blocks to keep and which blocks to discard.
 
 ---
 **Understanding the blocks extracted**
@@ -67,4 +71,15 @@ The resulting output can be seen in the following video
 
 https://github.com/user-attachments/assets/e8908db8-a77c-4310-8790-c98e17363456
 
+---
+
+To further expand the idea of visualizing the pdf, the extracted markdown and the blocks in pdf, I have built a front end. The code is given [here]('extras/visualize_pdf_data_extraction/').
+
+This UI allows the following:
+
+- view list of pdf files available in the repository
+- render the pdf itself in the UI
+- see the markdown version of the pdf
+- see bounding boxes around the content blocks
+- selectively create bounding boxes around different types of content blocks such as text, image, references etc
 

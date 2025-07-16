@@ -93,7 +93,7 @@ def get_markdown_data(filename):
         collection_name = collection_name[0]['markdown']
         return JSONResponse(content = collection_name)
     else:
-        return JSONResponse(content = [])
+        return JSONResponse(content = "Markdown Not Found")
 
 
 if __name__ == "__main__":

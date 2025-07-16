@@ -73,7 +73,7 @@ https://github.com/user-attachments/assets/e8908db8-a77c-4310-8790-c98e17363456
 
 ---
 
-To further expand the idea of visualizing the pdf, the extracted markdown and the blocks in pdf, I have built a front end. The code is given [here]('extras/visualize_pdf_data_extraction/').
+To further expand the idea of visualizing the pdf, the extracted markdown and the blocks in pdf, I have built a front end. The code is given [here](extras/visualize_pdf_data_extraction/).
 
 This UI allows the following:
 

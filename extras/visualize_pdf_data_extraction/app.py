@@ -41,7 +41,6 @@ app.mount("/static", StaticFiles(directory=STATIC_DIR), name="static")
 def root(request: Request):
     return templates.TemplateResponse("index.html", {
         "request": request,
-        "chat_endpoint": "/echo"
     })
 
 

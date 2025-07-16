@@ -83,3 +83,6 @@ This UI allows the following:
 - see bounding boxes around the content blocks
 - selectively create bounding boxes around different types of content blocks such as text, image, references etc
 
+Demo of the UI can be found below:
+
+https://github.com/user-attachments/assets/401ef30a-9dbe-4019-8952-94bb91ac0807

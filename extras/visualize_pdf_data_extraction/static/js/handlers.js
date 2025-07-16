@@ -52,6 +52,8 @@ function fetchBlocksData(fileName){
             }
         )
         .catch(error => console.error('Error fetching markdown:', error));
+        //const commandButton = document.getElementById("command-button-show-text");
+        //commandButton.classList.remove('hidden');
 }
 
 function handleClickOnBlockTypeNames(event) {

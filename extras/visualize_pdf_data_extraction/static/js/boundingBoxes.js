@@ -9,15 +9,6 @@ function showBoundingBoxes(bboxData) {
     console.warn("No PDF currently rendered");
     return;
   }
-
-  // Remove previous overlays if any
-  /*
-  pageWrappers.forEach(({ wrapper }) => {
-    const existing = wrapper.querySelectorAll('.bbox-overlay');
-    existing.forEach(el => el.remove());
-  });
-    */
-  //  bboxData.forEach(({ page, x, y, width, height, label }) => {
   bboxData.forEach((box_data) => {
     const page = box_data.page+1;
     const bbox = box_data.bbox;
@@ -27,6 +18,7 @@ function showBoundingBoxes(bboxData) {
     const height = bbox[3] - bbox[1];
     const label = box_data.content;
     const match = pageWrappers.find(p => p.pageNum === page);
+    const order = box_data.order;
     if (!match) return;
 
     const overlay = document.createElement("div");
@@ -38,9 +30,32 @@ function showBoundingBoxes(bboxData) {
     overlay.style.width = `${width * match.viewport.scale}px`;
     overlay.style.height = `${height * match.viewport.scale}px`;
     overlay.style.border = "2px solid red";
-    overlay.title = label || "";
+    overlay.style.zIndex = 2;
+    //overlay.title = label || "";
+
+    // Prepare tooltip HTML
+    const tooltipHtml = `
+        <strong>Order:</strong> ${box_data.order}<br/>
+      <strong>Section:</strong> ${box_data.section || 'N/A'}<br/>
+      <strong>Type:</strong> ${box_data.block_type}<br/>
+      <strong>Num_Chars:</strong> ${box_data.content.length || 0}<br/>      
+      <strong>Text:</strong> ${box_data.content?.slice(0, 150) || '—'}
+    `;
+
+
+    overlay.setAttribute('data-tippy-content', tooltipHtml);
+    overlay.dataset.order = order;
 
     match.wrapper.appendChild(overlay);
+  });
+    // Initialize Tippy on all overlays (after DOM insertion)
+  tippy('.bbox-overlay', {
+    allowHTML: true,
+    theme: 'light-border',
+    placement: 'top',
+    delay: [100, 0],
+    interactive: true,
+    maxWidth: 300
   });
 }
 
